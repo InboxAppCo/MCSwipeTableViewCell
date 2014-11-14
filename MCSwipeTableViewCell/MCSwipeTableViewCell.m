@@ -266,11 +266,13 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     NSTimeInterval animationDuration    = [self animationDurationWithVelocity:velocity];
     _direction                          = [self directionWithPercentage:percentage];
     
-    if (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStateChanged) {
+    if (state == UIGestureRecognizerStateBegan && (velocity.x > 125 || velocity.x < -125) && (translation.x > 0.55 || translation.x < -0.55)) {
         _dragging = YES;
         
         [self setupSwipingView];
-        
+    }
+    
+    else if (state == UIGestureRecognizerStateChanged) {
         CGPoint center = {_contentScreenshotView.center.x + translation.x, _contentScreenshotView.center.y};
         _contentScreenshotView.center = center;
         [self animateWithOffset:CGRectGetMinX(_contentScreenshotView.frame)];
